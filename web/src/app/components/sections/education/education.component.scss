@@ -1,0 +1,200 @@
+.section-header {
+  padding: 26px 28px 0;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 20px;
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+
+    span {
+      color: var(--accent);
+    }
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    margin-top: 8px;
+    width: 50%;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent-strong) 0%, var(--surface) 100%);
+  }
+}
+
+.section-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.grad-icon {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-b);
+  color: var(--accent);
+}
+
+.accent-icon {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-b);
+  color: var(--accent);
+}
+
+.section-body {
+  padding: 0 28px 28px;
+}
+
+/* Edu list */
+.edu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.edu-item {
+  display: flex;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.edu-year {
+  font-size: .8rem;
+  color: var(--muted);
+  min-width: 82px;
+  padding-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.edu-content {
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 3px;
+  }
+
+  .inst {
+    font-size: .86rem;
+    color: var(--accent);
+    margin-bottom: 7px;
+  }
+}
+
+.badge-grad {
+  display: inline-block;
+  font-size: .68rem;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: rgba(74, 222, 128, .1);
+  border: 1px solid rgba(74, 222, 128, .25);
+  color: #4ade80;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+/* Certs card */
+.certs-card {
+  margin-top: 14px;
+}
+
+.certs-list {
+  padding: 0 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cert-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 13px 16px;
+  transition: border-color var(--t);
+
+  &:hover {
+    border-color: var(--accent-b);
+  }
+}
+
+.cert-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.cert-info {
+  flex: 1;
+  min-width: 0;
+
+  .cert-name {
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .cert-issuer {
+    font-size: .77rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+}
+
+.cert-year {
+  font-size: .77rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .section-header {
+    padding: 18px 16px 0;
+  }
+
+  .section-body {
+    padding: 0 16px 22px;
+  }
+
+  .certs-list {
+    padding: 0 16px 22px;
+  }
+
+  .edu-item {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .edu-year {
+    min-width: unset;
+  }
+}

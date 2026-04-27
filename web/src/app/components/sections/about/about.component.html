@@ -1,0 +1,91 @@
+<!-- Bio card -->
+<div class="section-card card fade-in">
+  <div class="section-header">
+    <h2>Sobre mí</h2>
+  </div>
+  <div class="section-body">
+    <p class="about-text">
+      Soy <strong>Técnico Universitario en Programación</strong> con bases de <strong>ciberseguridad</strong> enfocado en desarrollar mi carrera en <strong>Cloud</strong>, principalmente en <strong>AWS</strong> y <strong>Cloud Operations</strong>.
+    </p>
+    <p class="about-text">
+      Mi interés por entender la infraestructura detrás de las aplicaciones me llevó a especializarme en cloud. Actualmente me estoy formando de manera práctica, construyendo y desplegando soluciones en AWS, trabajando sobre entornos <strong>Linux</strong> y aprendiendo a partir de la resolución de problemas.
+    </p>
+    <p class="about-text">
+      Mi experiencia en desarrollo <strong>fullstack</strong> me permite comprender cómo las aplicaciones interactúan con la infraestructura y diseñar soluciones cloud con una visión más completa.
+    </p>
+    <p class="about-text">
+      Actualmente estoy preparando la certificación <strong>AWS Solutions Architect Associate (SAA-C03)</strong>, complementando el estudio con proyectos orientados a arquitectura, seguridad y automatización.
+    </p>
+
+    <!-- What I'm Doing -->
+    <p class="wid-title">¿A qué me dedico?</p>
+    <div class="wid-grid">
+      @for (item of data.whatIDo; track item.title) {
+        <div class="wid-item">
+          <div class="wid-icon">
+
+            @if (item.icon === 'cloud') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+              </svg>
+            }
+            @if (item.icon === 'devops') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 12c-2-2.5-4-4-6-4a4 4 0 0 0 0 8c2 0 4-1.5 6-4z"/>
+                <path d="M12 12c2 2.5 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.5-6 4z"/>
+              </svg>
+            }
+            @if (item.icon === 'cybersec') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2l8 4v6c0 5-4 9-8 10-4-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>
+              </svg>
+            }
+            @if (item.icon === 'code') {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+              </svg>
+            }
+
+          </div>
+          <h4>{{ item.title }}</h4>
+          <p>{{ item.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Technologies card -->
+<div class="section-card card fade-in tech-card">
+  <div class="section-header">
+    <h2>Tecnologías</h2>
+  </div>
+  <div class="tech-groups">
+    @for (group of data.techGroups; track group.label) {
+      <div class="tech-group">
+        <p class="tech-group-label">{{ group.label }}</p>
+        <div class="tech-chips">
+          @for (chip of group.chips; track chip.name) {
+            <span class="tech-chip"><ng-container *ngIf="chip.icon !== 'check'; else checkIcon">
+            <img [src]="chip.icon" [alt]="chip.name" width="15" height="15"/>
+            </ng-container>
+
+            <ng-template #checkIcon>
+              <svg width="15" height="15" viewBox="0 0 24 24" class="check-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </ng-template>
+              {{ chip.name }}
+            </span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

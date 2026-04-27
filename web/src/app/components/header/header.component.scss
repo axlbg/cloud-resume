@@ -1,0 +1,285 @@
+/* foto 250px, card 200px → sobresale (250-200)/2 = 25px arriba y abajo */
+$avatar-size: 250px;
+$card-height: 200px;
+$overflow: calc(($avatar-size - $card-height) / 2);
+/* 25px */
+$avatar-left: 28px;
+/* distancia desde el borde izquierdo de la card */
+
+.header-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: $card-height;
+  /* reserva espacio a la izquierda para la foto + gap */
+  padding: 0 36px 0 calc($avatar-left + $avatar-size + 28px);
+  overflow: visible;
+  /* permite que la foto sobresalga */
+  transition: opacity .35s ease, transform .35s ease;
+  /* margen vertical compensa el overflow de la foto */
+  margin-top: $overflow;
+  margin-bottom: $overflow;
+}
+
+/* ── FOTO ── */
+.avatar-wrap {
+  position: absolute;
+  left: $avatar-left;
+  width: $avatar-size;
+  height: $avatar-size;
+  flex-shrink: 0;
+  z-index: 10;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    position: relative;
+    z-index: 1;
+    border: 4px solid var(--surface);
+  }
+
+  .avatar-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent-strong) 0%,
+        var(--accent-b) 50%,
+        var(--accent-strong) 100%);
+    z-index: 0;
+    animation: spin-ring 6s linear infinite;
+    opacity: .8;
+  }
+}
+
+@keyframes spin-ring {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── NOMBRE ── */
+.name-block {
+  flex: 1;
+  min-width: 0;
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -.04em;
+    line-height: 1;
+    margin-bottom: 14px;
+
+
+    .hi {
+      color: var(--accent);
+      background: linear-gradient(90deg,
+          var(--accent-strong) 0%,
+          var(--accent-strong) 40%,
+          var(--accent-b) 50%,
+          var(--accent-strong) 60%,
+          var(--accent-strong) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+  }
+
+
+}
+
+.role-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.role {
+  font-size: .8rem;
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.socials {
+  display: flex;
+  margin-left: 10px;
+
+  a {
+    width: 33px;
+    height: 33px;
+    border-radius: 9px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--label);
+    transition: color var(--t), border-color var(--t), background var(--t);
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    &:hover {
+      color: var(--accent);
+      border-color: var(--accent-b);
+      background: var(--accent-dim);
+    }
+  }
+}
+
+/* ── DIVISOR ── */
+.divider {
+  width: 1px;
+  height: 80px;
+  /* no usa align-self:stretch porque overflow:visible lo rompe */
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── META derecha ── */
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex-shrink: 0;
+
+  &-item {
+    label {
+      font-size: .62rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .val {
+      font-size: .92rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      svg {
+        width: 11px;
+        height: 11px;
+        color: var(--muted);
+        flex-shrink: 0;
+      }
+
+      a {
+        color: inherit;
+
+        &:hover {
+          color: var(--accent);
+        }
+      }
+    }
+  }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .header-card {
+    height: auto;
+    padding: 20px 24px 20px calc($avatar-left + 160px + 20px);
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 120px;
+  }
+
+  .avatar-wrap {
+    width: 160px;
+    height: 160px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @keyframes spin-ring {
+    from {
+      transform: translateY(-50%) rotate(0deg);
+    }
+
+    to {
+      transform: translateY(-50%) rotate(360deg);
+    }
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .meta {
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .name-block h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/* mobile: foto dentro de la card, layout vertical */
+@media (max-width: 605px) {
+  .header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 18px 16px;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    gap: 14px;
+  }
+
+  .avatar-wrap {
+    position: relative;
+    left: unset;
+    top: unset;
+    transform: none;
+    width: 80px;
+    height: 80px;
+  }
+
+
+  .socials {
+    margin-left: 0;
+  }
+
+  @keyframes spin-ring {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .name-block h1 {
+    font-size: 1.8rem;
+  }
+
+  .meta {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

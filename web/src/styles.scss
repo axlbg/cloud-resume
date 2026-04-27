@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* ── RESET ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+app-root,
+app-header,
+app-navbar,
+app-about,
+app-projects,
+app-education,
+app-contact {
+  display: contents;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ════════════════════════════════════════
+   CSS VARIABLES — DARK (default)
+════════════════════════════════════════ */
+:root {
+  --bg: #0d1117;
+  --surface: #141922;
+  --surface2: #1a2232;
+  --surface3: #20293e;
+  --border: rgba(255, 255, 255, 0.07);
+  --border2: rgba(255, 255, 255, 0.13);
+
+  /* Verde principal */
+  --accent: #2E8B57;
+  --accent-strong: #22c55e;
+  --accent-dim: rgba(46, 139, 87, .10);
+  --accent-b: rgba(46, 139, 87, .25);
+
+  /* Verde secundario (más claro, para contraste) */
+  --second: #6FAF8F;
+  --second-dim: rgba(111, 175, 143, .10);
+  --second-b: rgba(111, 175, 143, .25);
+
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --muted: #4e6080;
+  --label: #7a90a8;
+
+  --card-w: min(1050px, 92vw);
+  --radius: 18px;
+  --radius-sm: 10px;
+
+  --shadow: 0 4px 40px rgba(0, 0, 0, .5), 0 1px 0 rgba(255, 255, 255, .05) inset;
+  --shadow-lg: 0 8px 60px rgba(0, 0, 0, .65), 0 1px 0 rgba(255, 255, 255, .07) inset;
+  --t: .2s ease;
+
+  --bg-image: url("assets/background/dark.png");
+}
+
+/* ════════════════════════════════════════
+   LIGHT MODE
+════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg: #eef2f8;
+  --surface: #ffffff;
+  --surface2: #f1f5fb;
+  --surface3: #e6edf7;
+  --border: rgba(0, 0, 0, 0.08);
+  --border2: rgba(0, 0, 0, 0.14);
+
+  /* Verde principal (ligeramente más saturado para light) */
+  --accent: #2E8B57;
+  --accent-dim: rgba(46, 139, 87, .08);
+  --accent-b: rgba(46, 139, 87, .22);
+
+  /* Verde secundario */
+  --second: #6FAF8F;
+  --second-dim: rgba(111, 175, 143, .08);
+  --second-b: rgba(111, 175, 143, .22);
+
+  --text: #1e293b;
+  --text2: #475569;
+  --muted: #94a3b8;
+  --label: #64748b;
+
+  --shadow: 0 4px 24px rgba(0, 0, 0, .08), 0 1px 0 rgba(255, 255, 255, .9) inset;
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, .12), 0 1px 0 rgba(255, 255, 255, .9) inset;
+
+  --bg-image: url("assets/background/light.png");
+}
+
+/* ════════════════════════════════════════
+   BASE
+════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+  font-size: 19px;
+}
+
+body {
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background var(--t), color var(--t);
+}
+
+/* ── BG BLOBS ── */
+.blob-top,
+.blob-bottom {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at center,
+      rgba(46, 139, 87, .15) 0%,
+      rgba(111, 175, 143, .08) 45%,
+      transparent 70%);
+  filter: blur(1px);
+}
+
+.blob-top {
+  top: -110px;
+}
+
+.blob-bottom {
+  bottom: -110px;
+}
+
+[data-theme="light"] .blob-top,
+[data-theme="light"] .blob-bottom {
+  background: radial-gradient(ellipse at center,
+      rgba(46, 139, 87, .11) 0%,
+      rgba(111, 175, 143, .06) 45%,
+      transparent 70%);
+}
+
+/* ════════════════════════════════════════
+   PAGE LAYOUT
+════════════════════════════════════════ */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 0;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  opacity: 0.9;
+}
+
+/* ════════════════════════════════════════
+   SHARED CARD
+════════════════════════════════════════ */
+.card {
+  width: var(--card-w);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: background var(--t), border-color var(--t), box-shadow var(--t);
+}
+
+/* ════════════════════════════════════════
+   FADE-IN ANIMATION (used by sections)
+════════════════════════════════════════ */
+.fade-in {
+  animation: fadeSlide .3s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE CARD WIDTH
+════════════════════════════════════════ */
+@media (max-width: 520px) {
+  html {
+    font-size: 16px;
+  }
+
+  .page-wrapper {
+    padding: 12px 0 80px;
+  }
+
+}

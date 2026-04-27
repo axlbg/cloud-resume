@@ -1,0 +1,40 @@
+<!-- Education card -->
+<div class="section-card card fade-in">
+  <div class="section-header">
+    <h2>Educación Formal</h2>
+  </div>
+
+  <div class="section-body">
+    <div class="edu-list">
+      @for (item of data.education; track item.degree) {
+        <div class="edu-item">
+          <div class="edu-year">{{ item.years }}</div>
+          <div class="edu-content">
+            <h3>{{ item.degree }}</h3>
+            <div class="inst">{{ item.institution }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Certifications card -->
+<div class="section-card card fade-in certs-card">
+  <div class="section-header">
+    <h2>Cursos y Certificaciones</h2>
+  </div>
+
+  <div class="certs-list">
+    @for (cert of data.certifications; track cert.name) {
+      <div class="cert-item">
+        <div class="cert-logo">{{ cert.abbr }}</div>
+        <div class="cert-info">
+          <div class="cert-name">{{ cert.name }}</div>
+          <div class="cert-issuer">{{ cert.issuer }}</div>
+        </div>
+        <div class="cert-year">{{ cert.year }}</div>
+      </div>
+    }
+  </div>
+</div>
