@@ -1,0 +1,33 @@
+{
+    "CallerReference": "my-new-dist-1",
+    "DefaultRootObject": "index.html",
+    "Origins": {
+        "Quantity": 1,
+        "Items": [
+            {
+                "Id": "S3-origin",
+                "DomainName": "my-bucket-for-my-web-1234.s3.amazonaws.com",
+                "OriginAccessControlId": "EJ8I5TSFKPXUS",
+                "S3OriginConfig": {
+                    "OriginAccessIdentity": ""
+                }
+            }
+        ]
+    },
+    "DefaultCacheBehavior": {
+        "TargetOriginId": "S3-origin",
+        "ViewerProtocolPolicy": "redirect-to-https",
+        "MinTTL": 0,
+        "ForwardedValues": {
+            "QueryString": false,
+            "Cookies": {
+                "Forward": "none"
+            }
+        }
+    },
+    "Comment": "Distribution for my web",
+    "PriceClass": "PriceClass_100",
+    "Enabled": true,
+    "IsIPV6Enabled": false,
+    "ConnectionMode": "direct"
+}
