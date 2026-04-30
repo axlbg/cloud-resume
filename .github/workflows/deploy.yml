@@ -45,7 +45,7 @@ jobs:
       # 6. Deploy to S3
       - name: Deploy to S3
         run: |
-          aws s3 sync web/dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
+          aws s3 sync web/dist/portfolio/browser s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
       # 7. Invalidate CloudFront
       - name: Invalidate CloudFront
