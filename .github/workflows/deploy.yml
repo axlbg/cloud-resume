@@ -29,7 +29,13 @@ jobs:
         working-directory: web
         run: npm ci
 
-      # 4. Build
+      # 4.0.0
+      - name: Replace API URL
+        working-directory: web
+        run: |
+          sed -i 's|__API_URL__|${{ vars.LAMBDA_API_URL }}|g' src/environments/environment.ts
+
+      # 4.1 Build
       - name: Build project
         working-directory: web
         run: npm run build

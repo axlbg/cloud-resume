@@ -104,6 +104,16 @@
   color: var(--muted);
 }
 
+.last-updated {
+  padding: 12px 28px 20px;
+  font-size: .9 rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  display: flex;
+  justify-content: end;
+}
+
 /* Responsive */
 @media (max-width: 520px) {
   .contact-header {
