@@ -1,9 +1,12 @@
 import json
 import boto3
+import os
 from datetime import datetime, timezone
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('PortfolioMetadata')
+
+API_TOKEN = os.environ.get("API_TOKEN")
 
 def lambda_handler(event, context):
     method = event.get("requestContext", {}).get("http", {}).get("method")
@@ -30,6 +33,13 @@ def lambda_handler(event, context):
 
     # POST /lastDeploy
     if method == "POST":
+        headers = event.get("headers", {})
+        if headers.get("authorization") != API_TOKEN:
+            return {
+                "statusCode": 403,
+                "body": "Forbidden"
+            }
+
         try:
             now = datetime.now(timezone.utc).isoformat()
 

@@ -59,3 +59,9 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
+
+      # 8. Update last deploy metadata
+      - name: Update last deploy
+        run: |
+          curl -X POST ${{ vars.LAMBDA_API_URL }}/lastDeploy \
+            -H "Authorization: ${{ secrets.LAMBDA_API_TOKEN }}"
