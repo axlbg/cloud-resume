@@ -41,20 +41,23 @@ export class PortfolioDataService {
   {
     label: 'AWS', category: 'cloud',
     chips: [
-     // { name: 'AWS',     icon: /*'https://cdn.simpleicons.org/amazonaws/FF9900' */'check'},
-      { name: 'EC2',     icon: 'check' },
-      { name: 'S3',      icon: 'check' },
-      { name: 'IAM',     icon: 'check' },
-      { name: 'VPC',     icon: 'check' },
-      { name: 'Lambda',  icon: 'check' },
-      { name: 'AWS CLI', icon: 'check' },
+      { name: 'S3',     icon: 'assets/icons/aws/Arch_Amazon-Simple-Storage-Service_64.svg'     },
+      { name: 'IAM',    icon: 'assets/icons/aws/Arch_AWS-Identity-and-Access-Management_64.svg'    },
+      { name: 'DynamoDB',    icon: 'assets/icons/aws/Arch_Amazon-DynamoDB_64.svg'    },
+      { name: 'EC2',    icon: 'assets/icons/aws/Arch_Amazon-EC2_64.svg'    },
+      { name: 'Lambda', icon: 'assets/icons/aws/Arch_AWS-Lambda_64.svg' },
+      { name: 'VPC',    icon: 'assets/icons/aws/Arch_Amazon-Virtual-Private-Cloud_64.svg'    },
+      { name: 'CloudFront',    icon: 'assets/icons/aws/Arch_Amazon-CloudFront_64.svg'    },
+      { name: 'API Gateway',    icon: 'assets/icons/aws/Arch_Amazon-API-Gateway_64.svg'    },
+      { name: 'Route 53',    icon: 'assets/icons/aws/Arch_Amazon-Route-53_64.svg'    },
+      { name: 'AWS CLI',    icon: 'assets/icons/aws/Arch_AWS-CloudShell_64.svg'    },
     ],
   },
   {
     label: 'DevOps', category: 'devops',
     chips: [
-      { name: 'Networking',     icon: 'https://cdn.simpleicons.org/cisco/1BA0D7'          },
       { name: 'Linux',          icon: 'https://cdn.simpleicons.org/linux/FCC624'          },
+      { name: 'Networking',     icon: 'https://cdn.simpleicons.org/cisco/1BA0D7'          },
       { name: 'Docker',         icon: 'https://cdn.simpleicons.org/docker/2496ED'         },
       { name: 'GitHub Actions', icon: 'https://cdn.simpleicons.org/githubactions/2088FF' },
       { name: 'CI/CD',          icon: 'https://cdn.simpleicons.org/githubactions/2088FF' },
@@ -76,16 +79,17 @@ export class PortfolioDataService {
       { name: 'TypeScript', icon: 'https://cdn.simpleicons.org/typescript/3178C6'  },
       { name: 'Java',       icon: 'https://cdn.simpleicons.org/openjdk/007396'     },
       { name: 'Python',     icon: 'https://cdn.simpleicons.org/python/3776AB'      },
+      { name: 'Bash',     icon: 'https://cdn.simpleicons.org/gnubash/4EAA25'      },
     ],
   },
 ];
 
   readonly projects: Project[] = [
     // Cloud
-    { title: 'Cloud Resume Challenge',       category: 'cloud',
-      description: 'RESUMECHALLENGE',
-      stack: ['AWS', 'S3', 'EC2'],
-      githubUrl: 'https://github.com/axlbg' },
+    { title: 'AWS Cloud Portfolio', category: 'cloud',
+      description: 'Frontend con despliegue automático en S3 con CloudFront, fecha de la última actualización consultada desde DynamoDB vía Lambda.',
+      stack: ['S3', 'Lambda', 'DynamoDB', 'CloudFront', 'IaC', 'GitHub Actions', 'Python'],
+      githubUrl: 'https://github.com/axlbg/cloud-resume' },
     // Fullstack
     { title: 'Workout Tracker', category: 'fullstack',
       description: 'App para registrar y seguir rutinas de entrenamiento con historial y métricas de progreso.',
@@ -105,12 +109,12 @@ export class PortfolioDataService {
       githubUrl: 'https://github.com/axlbg/Take-notes-app',
       liveUrl: 'https://take-notes-app-ten.vercel.app/' },
 
-    { title: 'Esquina Piñeiro', category: 'fullstack',
+    /*{ title: 'Esquina Piñeiro', category: 'fullstack',
       description: 'Sitio web y carta digital para local gastronómico con gestión de menú.',
       stack: ['Angular', 'Typescript'],
       githubUrl: 'https://github.com/axlbg/Esquina-Pineiro',
       liveUrl: 'https://esquina-pineiro.web.app' },
-
+*/
     { title: 'Tienda deportiva', category: 'fullstack',
       description: 'Frontend demo para tienda deportiva. Cuenta con carrito de compras y productos en catálogo JSON, responsive, filtros de búsqueda y más.',
       stack: ['Angular', 'Typescript'],
