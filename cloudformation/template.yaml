@@ -1,0 +1,264 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Cloud portfolio 
+Parameters:
+  HostedZoneId:
+    Type: String
+    Description: Route53 Hosted Zone ID
+
+Resources:
+  S3Bucket:
+    # 1 Create s3 bucket
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-s3-bucket.html
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      # AWS Region is the same as CFN Stack
+      BucketName: my-bucket-for-my-web-via-cfn-1234
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  OriginAccessControl:
+    # 2 Create OAC
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-cloudfront-originaccesscontrol.html
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig: 
+          Description: OAC for s3 bucket via cfn
+          Name: my-oac-via-cfn-1
+          OriginAccessControlOriginType: s3
+          SigningBehavior: always
+          SigningProtocol: sigv4
+  CloudFrontDistribution:
+    # 3 Create CloudFront distribution 
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-cloudfront-distribution.html
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig: 
+        DefaultRootObject: index.html
+        Origins:
+          - Id: S3-origin-1
+            DomainName: !GetAtt S3Bucket.RegionalDomainName
+            OriginAccessControlId: !Ref OriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: S3-origin-1
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+        Comment: Distribution for cloud portfolio
+        PriceClass: PriceClass_100
+        Enabled: true
+        IPV6Enabled: false
+        ConnectionMode: direct
+        Aliases:
+          - axelguzman.com
+          - www.axelguzman.com
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:446103799210:certificate/fcaa5a6f-1657-460c-9a87-e824c10f4cf5
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+  BucketPolicy:
+    # 4 Set bucket policy 
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-s3-bucketpolicy.html
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument: 
+          Version: "2012-10-17"
+          Statement: 
+              - Sid: AllowCloudFrontServicePrincipalReadOnly
+                Effect: Allow
+                Principal:
+                    Service: cloudfront.amazonaws.com
+                Action: s3:GetObject
+                Resource: !Sub "arn:${AWS::Partition}:s3:::${S3Bucket}/*" 
+                Condition:
+                    StringEquals:
+                        AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+  # 5 (upload app) not needed anymore
+  DynamoDBTable:
+    # 6 Create DynamoDB Table 
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-dynamodb-table.html
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      TableName: PortfolioMetadata
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+  IAMRoleForLambda:
+    # 7.1 Create IAM Role 
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-iam-role.html
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: 
+            Version: 2012-10-17
+            Statement: 
+              - Effect: Allow
+                Principal: 
+                  Service: lambda.amazonaws.com
+                Action: sts:AssumeRole
+      Description: Lambda access to DynamoDB Table
+      Policies:
+        - PolicyName: dynamodb-lastdeploy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                Resource: !GetAtt DynamoDBTable.Arn
+      RoleName: lambda-dynamodb-access-role
+  LambdaFunction:
+    # 7.2 Create lambda function 
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-function.html
+    # NOTE: After deploy, manually set API_TOKEN environment variable in Lambda console
+    Type: AWS::Lambda::Function
+    Properties:
+      Code: 
+        ZipFile: | 
+          import json
+          import boto3
+          import os
+          from datetime import datetime, timezone
+
+          dynamodb = boto3.resource('dynamodb')
+          table = dynamodb.Table('PortfolioMetadata')
+          API_TOKEN = os.environ.get("API_TOKEN")
+
+          def lambda_handler(event, context):
+              method = event.get("requestContext", {}).get("http", {}).get("method")
+
+              if method == "GET":
+                  try:
+                      response = table.get_item(Key={"id": "site"})
+                      item = response.get("Item", {})
+                      return {
+                          "statusCode": 200,
+                          "headers": {"Content-Type": "application/json"},
+                          "body": json.dumps({"lastDeploy": item.get("lastDeploy")})
+                      }
+                  except Exception as e:
+                      return {
+                          "statusCode": 500,
+                          "headers": {"Content-Type": "application/json"},
+                          "body": json.dumps({"error": str(e)})
+                      }
+              if method == "POST":
+                  headers = event.get("headers", {})
+                  if headers.get("authorization") != API_TOKEN:
+                      return {"statusCode": 403, "body": "Forbidden"}
+                  try:
+                      now = datetime.now(timezone.utc).isoformat()
+                      table.put_item(Item={"id": "site", "lastDeploy": now})
+                      return {
+                          "statusCode": 200,
+                          "headers": {"Content-Type": "application/json"},
+                          "body": json.dumps({"lastDeploy": now})
+                      }
+                  except Exception as e:
+                      return {
+                          "statusCode": 500,
+                          "headers": {"Content-Type": "application/json"},
+                          "body": json.dumps({"error": str(e)})
+                      }
+              return {
+                  "statusCode": 400,
+                  "headers": {"Content-Type": "application/json"},
+                  "body": json.dumps({"error": "Unsupported method"})
+              }
+      Role: !GetAtt IAMRoleForLambda.Arn
+      FunctionName: last-deploy
+      Runtime: python3.12
+      Handler: index.lambda_handler
+  APIGateWay:
+    # 8 Create API Gateway with CORS
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-api.html
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: PortfolioMetadata-api
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins:
+          - https://axelguzman.com
+        AllowMethods:
+          - GET
+          - POST
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+  ApiIntegration:
+    # 9.1 Attach integration
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-integration.html
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref APIGateWay
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt LambdaFunction.Arn
+      PayloadFormatVersion: 2.0
+  ApiRoutesGET:
+    # 9.2.1 Create API Routes (GET)
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-route.html
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref APIGateWay
+      RouteKey: GET /lastDeploy
+      Target: !Sub "integrations/${ApiIntegration}"
+  ApiRoutesPOST:
+    # 9.2.2 Create API Routes (POST)
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-route.html
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref APIGateWay
+      RouteKey: POST /lastDeploy
+      Target: !Sub "integrations/${ApiIntegration}"    
+
+  ApiGateWayStage:
+    # 10 Create Api Gateway stage
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-stage.html
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref APIGateWay
+      StageName: $default
+      AutoDeploy: true
+
+  LambdaPermission:
+    # 11 Lambda Permission for API Gateway
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-permission.html
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt LambdaFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${APIGateWay}/*/*"
+
+  # Configure Route53
+  Route53RecordSet:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: axelguzman.com
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        EvaluateTargetHealth: false
+  Route53RecordSetWWW:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: www.axelguzman.com
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        EvaluateTargetHealth: false

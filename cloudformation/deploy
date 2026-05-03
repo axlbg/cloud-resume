@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+#https://docs.aws.amazon.com/cli/latest/reference/cloudformation/deploy.html
+
+echo "== deploy to CFN"
+
+STACK_NAME="cfn-cloud-portfolio"
+HOSTED_ZONE_ID="Z056235027UBA1O3FEDVE"
+
+aws cloudformation deploy \
+--template-file template.yaml \
+--no-execute-changeset \
+--region sa-east-1 \
+--stack-name $STACK_NAME \
+--parameter-overrides HostedZoneId=$HOSTED_ZONE_ID \
+--capabilities CAPABILITY_NAMED_IAM
