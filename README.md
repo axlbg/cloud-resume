@@ -17,13 +17,14 @@ Security is a core focus throughout — from locked-down bucket policies and lea
 
 ### Cloud — AWS
 - **S3** — Static file hosting
-- **CloudFront** — CDN with HTTPS and HTTP→HTTPS redirect
+- **CloudFront** — CDN with HTTPS and HTTP
 - **OAC (Origin Access Control)** — Restricts S3 access to CloudFront only
 - **DynamoDB** — NoSQL table storing last deploy metadata
 - **Lambda** — Serverless function handling GET/POST requests — Using Python
 - **API Gateway (HTTP API)** — Exposes Lambda as REST-like endpoints
 - **Route53** — DNS management and ACM certificate validation
 - **IAM** — Roles and least-privilege policies
+- **CloudFormation** — Infrastructure as Code
 
 ### Frontend
 - **Angular** — SPA compiled to static files and synced to S3
@@ -39,7 +40,6 @@ Security is a core focus throughout — from locked-down bucket policies and lea
 - POST Request requires authorization token
 - Lambda environments variables to secure token
 - GitHub Actions uses **repository secrets**
-- Custom domain with SSL/TLS certificate validated via Route 53
 
 ---
 
