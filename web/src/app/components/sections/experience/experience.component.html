@@ -1,0 +1,48 @@
+<div class="section-card card fade-in">
+  <div class="section-header">
+    <h2>Experiencia Profesional</h2>
+  </div>
+
+  <div class="section-body">
+    <div class="exp-list">
+      @for (item of data.experience; track item.company) {
+        <div class="exp-company">
+          <div class="exp-company-head">
+            <h3>{{ item.company }}</h3>
+            @if (item.location) {
+              <span class="exp-location">{{ item.location }}</span>
+            }
+          </div>
+
+          <div class="exp-roles" [class.multi]="item.roles.length > 1">
+            @for (role of item.roles; track role.title) {
+              <div class="exp-role">
+                <div class="exp-role-head">
+                  <h4>{{ role.title }}</h4>
+                  <div class="exp-meta">
+                    {{ period(role) }} · {{ duration(role) }}
+                    @if (role.schedule) {
+                      · {{ role.schedule }}
+                    }
+                  </div>
+                </div>
+
+                <ul class="exp-highlights">
+                  @for (h of role.highlights; track h) {
+                    <li>{{ h }}</li>
+                  }
+                </ul>
+
+                <div class="exp-stack">
+                  @for (tech of role.stack; track tech) {
+                    <span>{{ tech }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

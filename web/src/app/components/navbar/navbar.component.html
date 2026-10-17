@@ -36,10 +36,12 @@
 </nav>
 
 <!-- Active section rendered below -->
-<div class="sections-container"></div>
-
+<div class="sections-container">
   @if (activeSection() === 'sobre-mi') {
     <app-about/>
+  }
+  @if (activeSection() === 'experiencia') {
+    <app-experience/>
   }
   @if (activeSection() === 'proyectos') {
     <app-projects/>
@@ -47,6 +49,6 @@
   @if (activeSection() === 'educacion') {
     <app-education/>
   }
-
+</div>
 
 <app-contact/>

@@ -4,6 +4,7 @@ import { ThemeService } from '../../services/theme.service';
 import { PortfolioDataService } from '../../services/portfolio-data.service';
 import { Section } from '../../models/portfolio.models';
 import { AboutComponent } from '../sections/about/about.component';
+import { ExperienceComponent } from '../sections/experience/experience.component';
 import { ProjectsComponent } from '../sections/projects/projects.component';
 import { EducationComponent } from '../sections/education/education.component';
 import { ContactComponent } from '../contact/contact.component';
@@ -11,7 +12,7 @@ import { ContactComponent } from '../contact/contact.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, AboutComponent, ProjectsComponent, EducationComponent, ContactComponent],
+  imports: [CommonModule, AboutComponent, ExperienceComponent, ProjectsComponent, EducationComponent, ContactComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })

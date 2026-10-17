@@ -1,88 +1,157 @@
 import { Injectable } from '@angular/core';
 import {
   NavItem, Project, TechGroup, WhatIDo,
-  EduItem, CertItem, ContactRow
+  EduItem, CertItem, ContactRow, ExperienceItem
 } from '../models/portfolio.models';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioDataService {
 
   readonly navItems: NavItem[] = [
-    { id: 'sobre-mi',  label: 'Sobre mí'  },
-    { id: 'proyectos', label: 'Proyectos' },
-    { id: 'educacion', label: 'Educación' },
+    { id: 'sobre-mi',    label: 'Sobre mí'    },
+    { id: 'experiencia', label: 'Experiencia' },
+    { id: 'proyectos',   label: 'Proyectos'   },
+    { id: 'educacion',   label: 'Educación'   },
   ];
 
   readonly whatIDo: WhatIDo[] = [
     {
-      title: 'Cloud & AWS',
-      description: 'Construyo y despliego soluciones en AWS, explorando servicios clave y buenas prácticas de arquitectura cloud.',
+      title: 'Ciberseguridad',
+      description: 'Analizo y respondo incidentes de seguridad, monitoreo alertas y administro firewalls, seguridad de correo e identidades en entornos corporativos.',
+      icon: 'cybersec',
+    },
+    {
+      title: 'Cloud Security',
+      description: 'Diseño y aprovisiono infraestructura en AWS con la seguridad como punto de partida: gestión de accesos, segmentación de red y protección de datos.',
       icon: 'cloud',
     },
     {
       title: 'DevOps',
-      description: 'Aplico prácticas de CI/CD, automatización y gestión de entornos para mejorar procesos de desarrollo.',
+      description: 'Automatizo build, testing y despliegue con pipelines CI/CD, infraestructura como código y contenedores Docker.',
       icon: 'devops',
     },
     {
-      title: 'Ciberseguridad',
-      description: 'Aplico buenas prácticas de seguridad en sistemas y aplicaciones, incluyendo gestión de accesos, protección de datos y comprensión de vulnerabilidades comunes.',
-      icon: 'cybersec',
-    },
-    {
       title: 'Desarrollo Full Stack',
-      description: 'Desarrollo soluciones tanto para proyectos personales como para necesidades específicas.',
+      description: 'Desarrollo aplicaciones web a medida para clientes, desde el relevamiento de requerimientos hasta su puesta en producción.',
       icon: 'code',
     },
   ];
 
-  
- readonly techGroups: TechGroup[] = [
-  {
-    label: 'AWS', category: 'cloud',
-    chips: [
-      { name: 'S3',     icon: 'assets/icons/aws/Arch_Amazon-Simple-Storage-Service_64.svg'     },
-      { name: 'IAM',    icon: 'assets/icons/aws/Arch_AWS-Identity-and-Access-Management_64.svg'    },
-      { name: 'DynamoDB',    icon: 'assets/icons/aws/Arch_Amazon-DynamoDB_64.svg'    },
-      { name: 'EC2',    icon: 'assets/icons/aws/Arch_Amazon-EC2_64.svg'    },
-      { name: 'Lambda', icon: 'assets/icons/aws/Arch_AWS-Lambda_64.svg' },
-      { name: 'VPC',    icon: 'assets/icons/aws/Arch_Amazon-Virtual-Private-Cloud_64.svg'    },
-      { name: 'CloudFront',    icon: 'assets/icons/aws/Arch_Amazon-CloudFront_64.svg'    },
-      { name: 'API Gateway',    icon: 'assets/icons/aws/Arch_Amazon-API-Gateway_64.svg'    },
-      { name: 'Route 53',    icon: 'assets/icons/aws/Arch_Amazon-Route-53_64.svg'    },
-      { name: 'AWS CLI',    icon: 'assets/icons/aws/Arch_AWS-CloudShell_64.svg'    },
-    ],
-  },
-  {
-    label: 'DevOps', category: 'devops',
-    chips: [
-      { name: 'Linux',          icon: 'https://cdn.simpleicons.org/linux/FCC624'          },
-      { name: 'Networking',     icon: 'https://cdn.simpleicons.org/cisco/1BA0D7'          },
-      { name: 'Docker',         icon: 'https://cdn.simpleicons.org/docker/2496ED'         },
-      { name: 'GitHub Actions', icon: 'https://cdn.simpleicons.org/githubactions/2088FF' },
-      { name: 'CI/CD',          icon: 'https://cdn.simpleicons.org/githubactions/2088FF' },
-      { name: 'IaC',            icon: 'https://cdn.simpleicons.org/terraform/7B42BC'      },
-    ],
-  },
-  {
-    label: 'Bases de datos', category: 'database',
-    chips: [
-      { name: 'MongoDB',    icon: 'https://cdn.simpleicons.org/mongodb/47A248'   },
-      { name: 'MySQL',      icon: 'https://cdn.simpleicons.org/mysql/4479A1'     },
-      { name: 'PostgreSQL', icon: 'https://cdn.simpleicons.org/postgresql/4169E1'},
-    ],
-  },
-  {
-    label: 'Programación', category: 'fullstack',
-    chips: [
-      { name: 'JavaScript',    icon: 'https://cdn.simpleicons.org/javascript'     },
-      { name: 'TypeScript', icon: 'https://cdn.simpleicons.org/typescript/3178C6'  },
-      { name: 'Java',       icon: 'https://cdn.simpleicons.org/openjdk/007396'     },
-      { name: 'Python',     icon: 'https://cdn.simpleicons.org/python/3776AB'      },
-      { name: 'Bash',     icon: 'https://cdn.simpleicons.org/gnubash/4EAA25'      },
-    ],
-  },
-];
+  readonly experience: ExperienceItem[] = [
+    {
+      company: 'CTL Information Technology - Cliente: Personal',
+      location: 'Argentina · Híbrido',
+      roles: [
+        {
+          title: 'Analista de Ciberseguridad ',
+          start: '2026-06',
+          schedule: 'Jornada completa',
+          highlights: [
+            'Análisis de incidentes en Azure con Microsoft Defender y Microsoft Defender for Cloud Apps.',
+            'Monitoreo de alarmas de seguridad.',
+            'Monitoreo y administración de firewalls Fortinet y Cisco.',
+            'Control de la seguridad del correo electrónico con FortiGuard y Microsoft Exchange.',
+            'Resolución de incidentes de usuarios en Active Directory, doble factor (CyberArk Identity, Idira) y bases de datos Oracle.',
+          ],
+          stack: ['Microsoft Defender', 'Defender for Cloud Apps', 'Fortinet', 'Cisco', 'Active Directory', 'CyberArk', 'Oracle'],
+        },
+      ],
+    },
+    {
+      company: 'Freelance',
+      roles: [
+        {
+          title: 'Consultor Cloud & DevOps',
+          start: '2026-09',
+          highlights: [
+            'Análisis de requerimientos del cliente y traducción a arquitecturas de infraestructura.',
+            'Diseño y aprovisionamiento de infraestructura y seguridad en AWS.',
+            'Implementación de pipelines CI/CD para build, testing y despliegue automatizado.',
+            'Contenerización de aplicaciones con Docker y gestión de despliegues en producción.',
+            'Participación en el desarrollo de un sistema interno.',
+          ],
+          stack: ['AWS', 'Terraform', 'CloudFormation', 'Docker', 'GitHub Actions', 'Linux'],
+        },
+        {
+          title: 'Desarrollador Full Stack',
+          start: '2023-08',
+          end: '2026-09',
+          highlights: [
+            'Desarrollo end-to-end de aplicaciones web, hasta su despliegue en producción.',
+            'Relevamiento de requerimientos con clientes, traducción a funcionalidades concretas y entrega de soluciones.',
+            'Autenticación con JWT y OAuth 2.0.',
+            'Integración de Firebase y Supabase (auth, base de datos, APIs).',
+            'Diseño e implementación de bases de datos PostgreSQL.',
+          ],
+          stack: ['Angular', 'Ionic', 'Spring Boot', 'Node.js', 'React', 'Next.js', 'PostgreSQL'],
+        },
+      ],
+    },
+  ];
+
+  readonly techGroups: TechGroup[] = [
+    {
+      label: 'Seguridad', category: 'security',
+      chips: [
+        { name: 'Microsoft Defender',      icon: 'check' },
+        { name: 'Defender for Cloud Apps', icon: 'check' },
+        { name: 'Fortinet',                icon: 'https://cdn.simpleicons.org/fortinet/EE3124' },
+        { name: 'Cisco',                   icon: 'https://cdn.simpleicons.org/cisco/1BA0D7'    },
+        { name: 'Active Directory',        icon: 'check' },
+        { name: 'CyberArk',                icon: 'check' },
+        { name: 'MFA',                     icon: 'check' },
+      ],
+    },
+    {
+      label: 'Cloud', category: 'cloud',
+      chips: [
+        { name: 'S3',          icon: 'assets/icons/aws/Arch_Amazon-Simple-Storage-Service_64.svg'          },
+        { name: 'IAM',         icon: 'assets/icons/aws/Arch_AWS-Identity-and-Access-Management_64.svg'     },
+        { name: 'DynamoDB',    icon: 'assets/icons/aws/Arch_Amazon-DynamoDB_64.svg'                        },
+        { name: 'EC2',         icon: 'assets/icons/aws/Arch_Amazon-EC2_64.svg'                             },
+        { name: 'Lambda',      icon: 'assets/icons/aws/Arch_AWS-Lambda_64.svg'                             },
+        { name: 'VPC',         icon: 'assets/icons/aws/Arch_Amazon-Virtual-Private-Cloud_64.svg'           },
+        { name: 'CloudFront',  icon: 'assets/icons/aws/Arch_Amazon-CloudFront_64.svg'                      },
+        { name: 'API Gateway', icon: 'assets/icons/aws/Arch_Amazon-API-Gateway_64.svg'                     },
+        { name: 'Route 53',    icon: 'assets/icons/aws/Arch_Amazon-Route-53_64.svg'                        },
+        { name: 'AWS CLI',     icon: 'assets/icons/aws/Arch_AWS-CloudShell_64.svg'                         },
+        { name: 'Azure',       icon: 'check' },
+      ],
+    },
+    {
+      label: 'DevOps & IaC', category: 'devops',
+      chips: [
+        { name: 'Terraform',      icon: 'https://cdn.simpleicons.org/terraform/7B42BC'     },
+        { name: 'CloudFormation', icon: 'check' },
+        { name: 'Docker',         icon: 'https://cdn.simpleicons.org/docker/2496ED'        },
+        { name: 'GitHub Actions', icon: 'https://cdn.simpleicons.org/githubactions/2088FF' },
+        { name: 'Linux',          icon: 'https://cdn.simpleicons.org/linux/FCC624'         },
+        { name: 'Networking',     icon: 'check' },
+      ],
+    },
+    {
+      label: 'Desarrollo', category: 'fullstack',
+      chips: [
+        { name: 'TypeScript',  icon: 'https://cdn.simpleicons.org/typescript/3178C6' },
+        { name: 'Java',        icon: 'https://cdn.simpleicons.org/openjdk/007396'    },
+        { name: 'Python',      icon: 'https://cdn.simpleicons.org/python/3776AB'     },
+        { name: 'Bash',        icon: 'https://cdn.simpleicons.org/gnubash/4EAA25'    },
+        { name: 'Angular',     icon: 'https://cdn.simpleicons.org/angular/DD0031'    },
+        { name: 'React',       icon: 'https://cdn.simpleicons.org/react/61DAFB'      },
+        { name: 'Spring Boot', icon: 'https://cdn.simpleicons.org/springboot/6DB33F' },
+        { name: 'Node.js',     icon: 'https://cdn.simpleicons.org/nodedotjs/5FA04E'  },
+      ],
+    },
+    {
+      label: 'Bases de datos', category: 'database',
+      chips: [
+        { name: 'PostgreSQL', icon: 'https://cdn.simpleicons.org/postgresql/4169E1' },
+        { name: 'MySQL',      icon: 'https://cdn.simpleicons.org/mysql/4479A1'      },
+        { name: 'MongoDB',    icon: 'https://cdn.simpleicons.org/mongodb/47A248'    },
+        { name: 'Oracle',     icon: 'check' },
+      ],
+    },
+  ];
 
   readonly projects: Project[] = [
     // Cloud
@@ -137,12 +206,6 @@ export class PortfolioDataService {
   ];
 
 readonly certifications: CertItem[] = [
-  {
-  abbr: 'AWS',
-  name: 'AWS Certified Solutions Architect Associate (SAA-C03)',
-  issuer: 'Amazon Web Services',
-  year: 'En preparación'
-},
   {
     abbr: 'AWS',
     name: 'AWS Cloud Practitioner Essentials',

@@ -1,6 +1,6 @@
-export type Section = 'sobre-mi' | 'proyectos' | 'educacion';
+export type Section = 'sobre-mi' | 'experiencia' | 'proyectos' | 'educacion';
 export type ProjectCategory = 'cloud' | 'fullstack';
-export type TechCategory = 'cloud' | 'devops' | 'fullstack' | 'database';
+export type TechCategory = 'security' | 'cloud' | 'devops' | 'fullstack' | 'database';
 
 export interface NavItem {
   id: Section;
@@ -31,6 +31,21 @@ export interface WhatIDo {
   title: string;
   description: string;
   icon: 'devops' | 'cloud' | 'cybersec' | 'code';
+}
+
+export interface ExperienceRole {
+  title: string;
+  start: string;   // YYYY-MM
+  end?: string;    // YYYY-MM, sin valor = actualidad
+  schedule?: string;
+  highlights: string[];
+  stack: string[];
+}
+
+export interface ExperienceItem {
+  company: string;
+  location?: string;
+  roles: ExperienceRole[];
 }
 
 export interface EduItem {
